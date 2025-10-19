@@ -50,7 +50,7 @@
 <br /><br />
 
 <label>Android phones are better than iphones</label><br />
-<select id="q4">
+<select id="q5">
 	<option value="5">Strongly Agree</option>
 	<option value="4">Agree</option>
 	<option value="3">Neither agree nor disagree</option>
@@ -60,7 +60,7 @@
 <br /><br />
 
 <label>Do you think should we go on date?</label><br />
-<select id="q5">
+<select id="q6">
 	<option value="5">Strongly Agree</option>
 	<option value="4">Agree</option>
 	<option value="3">Neither agree nor disagree</option>
@@ -70,64 +70,38 @@
 
 <br /><br /><br />
 
- <button onclick="sayHello()">Click Me!</button>
+	<button onclick="calculateCompatibility()">Click Me!</button>
 
-<script>
-console.log("Starting JavaScript");
+  	<p id="compatibility"></p>
 
-function sayHello() {
-  console.log("Hello, world!");
-  alert("Hello, world!"); // optional popup
-}
+  	<script>
+    	// constants
+    	const MAX_SCORE = 30; // 6 questions × 5 points each
+    	const DESIRED_RESPONSE = [5, 5, 5, 5, 5, 5]; // ideal answers
 
-sayHello(); // you can remove this if you only want it to run on button click
+   	 function calculateCompatibility() {
+      // get each answer
+      let responses = [];
+      for (let i = 1; i <= 6; i++) {
+        responses.push(parseInt(document.getElementById(`q${i}`).value));
+      }
 
-console.log("Ending JavaScript");
+      // calculate compatibility per question
+      let totalCompatibility = 0;
+      for (let i = 0; i < responses.length; i++) {
+        let compatibility = 5 - Math.abs(responses[i] - DESIRED_RESPONSE[i]);
+        totalCompatibility += compatibility;
+      }
 
-// Get the current values of the dropdown controls.
-	let question1Response = document.getElementById("q1").selectedOptions[0].value;
-	let question2Response = document.getElementById("q2").selectedOptions[0].value;
-	let question3Response = document.getElementById("q3").selectedOptions[0].value;
-	let question4Response = document.getElementById("q4").selectedOptions[0].value;
-	let question5Response = document.getElementById("q5").selectedOptions[0].value;
+      // convert to percentage
+      let percentage = Math.round((totalCompatibility / MAX_SCORE) * 100);
 
-	// Optionally log the values associated with question 1 through 3 to the console. 
-	console.log("Question 1 Answers:")
-	console.log(document.getElementById("q1").selectedOptions[0].text);
-	console.log(document.getElementById("q1").selectedOptions[0].value);
-	console.log(question1Response);
+      // display
+      document.getElementById("compatibility").innerHTML =
+        "Your compatibility score is: " + percentage + "%";
 
-	console.log("Question 2 Answers:");
-	console.log(document.getElementById("q2").selectedOptions[0].text);
-	console.log(document.getElementById("q2").selectedOptions[0].value);
-	console.log(question2Response);
-
-	console.log("Question 3 Answers:");
-	console.log(document.getElementById("q3").selectedOptions[0].text);
-	console.log(document.getElementById("q3").selectedOptions[0].value);
-	console.log(question2Response);
-
-	// Todo: Calculate compatibility scores.
-	let question1Compatibility = 5 - Math.abs(question1Response - DESIRED_RESPONSE[0]);
-	let question2Compatibility = 5 - Math.abs(question2Response - DESIRED_RESPONSE[1]);
-	let question3Compatibility = 5 - Math.abs(question3Response - DESIRED_RESPONSE[2]);
-
-	console.log("c1="+question1Compatibility);
-	console.log("c2="+question2Compatibility);
-	console.log("c3="+question3Compatibility);
-
-	// Calculate total compatibility. 
-	let totalCompatibility = question1Compatibility + question2Compatibility + question3Compatibility;
-
-	// Convert totalCompatibility to a percentage.
-	totalCompatibility *= 100 / MAX_SCORE;
-	totalCompatibility = Math.round(totalCompatibility);
-	console.log("tc="+ totalCompatibility);
-
-	document.getElementById("compatibility").innerHTML = "Your compatibility is: " + totalCompatibility;
-}
-
-</script>
+      console.log("Your compatibility is: " + percentage + "%");
+    }
+  </script>
 </body>
 </html>
-
