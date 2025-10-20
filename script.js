@@ -1,5 +1,9 @@
-const MAX_SCORE = 30; // 6 questions × 5 points each
-const DESIRED_RESPONSE = [5, 5, 5, 5, 5, 5]; // Ideal answers
+const NUM_QUESTIONS = 6;
+const MAX_POINTS = 5;
+const MAX_SCORE = NUM_QUESTIONS * MAX_POINTS;
+const DESIRED_RESPONSE = [5, 5, 5, 5, 5, 5]; // ideal answers
+const THRESHOLD_HIGH = 80;   // percentage for "Perfect Match"
+const THRESHOLD_MEDIUM = 50; // percentage for "Could be good"
 
 function calculateCompatibility() {
   let responses = [];
@@ -11,16 +15,13 @@ function calculateCompatibility() {
     }
     responses.push(parseInt(value));
   }
-
   let totalCompatibility = 0;
   let questionScores = [];
-
   for (let i = 0; i < responses.length; i++) {
     let score = 5 - Math.abs(responses[i] - DESIRED_RESPONSE[i]);
     questionScores.push(score);
     totalCompatibility += score;
   }
-
   let percentage = Math.round((totalCompatibility / MAX_SCORE) * 100);
 
   // Determine message
@@ -39,4 +40,5 @@ else message = "\uD83D\uDE05 Maybe just friends!"; // 😅
 
   // Display summary
 document.getElementById("compatibility").innerHTML = summaryText;
+  console.log("Compatibility summary:", summaryText);
 }
