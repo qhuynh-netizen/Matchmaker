@@ -4,11 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Matchmaker 2.0</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Matchmaker 2.0 Your Perfect Match Starts Here</h1>
+  <div class="container">
+    <h1>💘Matchmaker 2.0 Your Perfect Match Starts Here💘</h1>
+    <p class="instructions">
+      Answer each question honestly. Then click <b>Calculate Compatibility</b> to see how well we match!
+    </p>
 
-
+<form id="matchForm">
 <label>Dell is better than Apple</label><br />
 <select id="q1">
 	<option value="5">Strongly Agree</option>
@@ -66,42 +73,41 @@
 	<option value="3">Neither agree nor disagree</option>
 	<option value="2">Disagree</option>
 	<option value="1">Strongly Disagree</option>
-</select>
+</select><br /><br />
 
-<br /><br /><br />
+<button type="button" onclick="calculateCompatibility()">Click Me!</button>
+<p id="compatibility"></p>
 
-	<button onclick="calculateCompatibility()">Click Me!</button>
 
-  	<p id="compatibility"></p>
+<script>
+  const MAX_SCORE = 30;
+  const DESIRED_RESPONSE = [5, 5, 5, 5, 5, 5];
 
-  	<script>
-    	// constants
-    	const MAX_SCORE = 30; // 6 questions × 5 points each
-    	const DESIRED_RESPONSE = [5, 5, 5, 5, 5, 5]; // ideal answers
-
-   	 function calculateCompatibility() {
-      // get each answer
-      let responses = [];
-      for (let i = 1; i <= 6; i++) {
-        responses.push(parseInt(document.getElementById(`q${i}`).value));
+  function calculateCompatibility() {
+    let responses = [];
+    for (let i = 1; i <= 6; i++) {
+      const value = document.getElementById(`q${i}`).value;
+      if (value === "") {
+        alert("Please answer all 6 questions!");
+        return;
       }
-
-      // calculate compatibility per question
-      let totalCompatibility = 0;
-      for (let i = 0; i < responses.length; i++) {
-        let compatibility = 5 - Math.abs(responses[i] - DESIRED_RESPONSE[i]);
-        totalCompatibility += compatibility;
-      }
-
-      // convert to percentage
-      let percentage = Math.round((totalCompatibility / MAX_SCORE) * 100);
-
-      // display
-      document.getElementById("compatibility").innerHTML =
-        "Your compatibility score is: " + percentage + "%";
-
-      console.log("Your compatibility is: " + percentage + "%");
+      responses.push(parseInt(value));
     }
-  </script>
+
+    let totalCompatibility = 0;
+    for (let i = 0; i < responses.length; i++) {
+      totalCompatibility += 5 - Math.abs(responses[i] - DESIRED_RESPONSE[i]);
+    }
+
+    let percentage = Math.round((totalCompatibility / MAX_SCORE) * 100);
+
+    document.getElementById("compatibility").innerHTML =
+      "Your compatibility score is: " + percentage + "%";
+
+    console.log("Your compatibility is: " + percentage + "%");
+  }
+</script>
+
 </body>
 </html>
+
